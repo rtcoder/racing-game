@@ -8,8 +8,54 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background: #191919;
+  font-family: sans-serif;
 }
 
-canvas {
-  background: #191919;
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.start {
+  border: 1px solid #ccc;
+  background: #f00;
+  color: #fff;
+  cursor: pointer;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.controls-info {
+  position: fixed;
+  color: #fff;
+  top: 50%;
+  margin-top: 60px;
+}
+.row,
+.row .keys{
+  display: flex;
+  align-items: center;
+}
+.row .keys{
+  margin-right: 10px;
+}
+
+.row span {
+  margin: 0 5px
+}
+
+.key {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 3px;
+  margin: 2px;
+  width: 24px;
+  text-align: center;
 }

@@ -69,11 +69,12 @@ function initKeyboardEvents() {
 
 function initEvents() {
   window.addEventListener("resize", resize);
+  window.addEventListener("contextmenu", e => e.preventDefault());
 }
 
 function resize() {
   canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
+  canvas.width = window.innerWidth > 400 ? 400 : window.innerWidth;
 
   game.grassWidth = canvas.width / 10;
   game.roadWidth = canvas.width / 10 * 8;

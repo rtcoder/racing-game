@@ -3,16 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <title>Car race</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrapper">
   <canvas id="canvas"></canvas>
-  <div class="start">Start</div>
+  <button class="start" id="start" onclick="startGame()">Start</button>
+  <div class="controls-info">
+    <div class="touch-controls">
+      <p>Swipe</p>
+      <div class="row">
+        <div class="keys">
+          <div class="key">⇧</div>
+        </div>
+        <div>Accelerate</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">⇩</div>
+        </div>
+        <div>Brake</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">⇦</div>
+        </div>
+        <div>Turn left</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">⇨</div>
+        </div>
+        <div>Turn right</div>
+
+      </div>
+    </div>
+    <div class="keyboard-controls">
+      <div class="row">
+        <div class="keys">
+          <div class="key">W</div>
+          <span>/</span>
+          <div class="key">⇧</div>
+        </div>
+        <div>Accelerate</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">S</div>
+          <span>/</span>
+          <div class="key">⇩</div>
+        </div>
+        <div>Brake</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">A</div>
+          <span>/</span>
+          <div class="key">⇦</div>
+        </div>
+        <div>Turn left</div>
+
+      </div>
+      <div class="row">
+        <div class="keys">
+          <div class="key">D</div>
+          <span>/</span>
+          <div class="key">⇨</div>
+        </div>
+        <div>Turn right</div>
+
+      </div>
+    </div>
+  </div>
 </div>
 <script src="js/globals.js"></script>
 <script src="js/events.js"></script>
+<script src="js/car-move.js"></script>
+<script src="js/draw.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
