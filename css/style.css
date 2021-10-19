@@ -32,30 +32,9 @@ body {
   font-size: 20px;
 }
 
-.controls-info {
+controls-info {
   position: fixed;
   color: #fff;
   top: 50%;
   margin-top: 60px;
-}
-.row,
-.row .keys{
-  display: flex;
-  align-items: center;
-}
-.row .keys{
-  margin-right: 10px;
-}
-
-.row span {
-  margin: 0 5px
-}
-
-.key {
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding: 3px;
-  margin: 2px;
-  width: 24px;
-  text-align: center;
 }

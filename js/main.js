@@ -3,10 +3,10 @@ window.onload = function () {
 
   if (enableTouches) {
     initTouchEvents();
-    document.querySelector('.keyboard-controls').style.display='none';
+    document.querySelector('controls-info').setAttribute('type', 'touch');
   } else {
     initKeyboardEvents();
-    document.querySelector('.touch-controls').style.display='none';
+    document.querySelector('controls-info').setAttribute('type', 'keyboard');
   }
   initEvents();
   resize();
@@ -22,7 +22,7 @@ function startGame() {
   game.cars = [];
   game.distance = 0;
   startButton.style.display = 'none';
-  document.querySelector('.controls-info').style.display='none';
+  document.querySelector('.controls-info').style.display = 'none';
   loop();
 }
 
