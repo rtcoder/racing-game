@@ -56,6 +56,14 @@ function drawCar(car) {
   ctx.fill();
 }
 
+function drawCanister(canister) {
+  const {color, width, height, x, y} = canister;
+  ctx.fillStyle = color;
+  ctx.fillRect(x - width / 2, y - height / 2, width, height);
+
+  ctx.fill();
+}
+
 function drawScore() {
   ctxSpeedometer.fillStyle = "#fff";
   ctxSpeedometer.font = "20px monospace";

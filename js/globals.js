@@ -27,6 +27,7 @@ const game = {
   touchendY: 0,
   car: CAR_ORIGINAL,
   cars: [],
+  canisters: [],
   carsSpeed: 0.5,
   roadWidth: 200,
   grassWidth: 30,
