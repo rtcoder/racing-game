@@ -13,9 +13,17 @@ function initTouchEvents() {
     if (Math.abs(touchendY - touchstartY) < Math.abs(touchendX - touchstartX)) {
       if (touchendX < touchstartX) {
         goToLeft();
+        game.car.turnSignals.left = true;
+        setTimeout(() => {
+          game.car.turnSignals.left = false;
+        }, 500);
       }
       if (touchendX > touchstartX) {
         goToRight();
+        game.car.turnSignals.right = true;
+        setTimeout(() => {
+          game.car.turnSignals.right = false;
+        }, 500);
       }
     } else {
       if (touchendY < touchstartY) {
@@ -40,10 +48,12 @@ function initKeyboardEvents() {
       case 'ArrowLeft':
       case 'KeyA':
         goToLeft();
+        game.car.turnSignals.left = true;
         break;
       case 'ArrowRight':
       case 'KeyD':
         goToRight();
+        game.car.turnSignals.right = true;
         break;
       case 'ArrowUp':
       case 'KeyW':
@@ -59,6 +69,14 @@ function initKeyboardEvents() {
   window.addEventListener('keyup', e => {
     e.preventDefault();
     switch (e.code) {
+      case 'ArrowLeft':
+      case 'KeyA':
+        game.car.turnSignals.left = false;
+        break;
+      case 'ArrowRight':
+      case 'KeyD':
+        game.car.turnSignals.right = false;
+        break;
       case 'KeyS':
       case 'ArrowDown':
         game.car.isSlowingDown = false;
@@ -75,6 +93,7 @@ function initEvents() {
 function resize() {
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth > 400 ? 400 : window.innerWidth;
+  canvasSpeedometer.width = window.innerWidth > 400 ? 400 : window.innerWidth;
 
   game.grassWidth = canvas.width / 10;
   game.roadWidth = canvas.width / 10 * 8;

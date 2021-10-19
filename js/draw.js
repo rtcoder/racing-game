@@ -5,9 +5,11 @@ function draw() {
   drawGrass();
   drawBars();
   drawCar(car);
-  drawScore();
-
   ctx.fill();
+  ctxSpeedometer.clearRect(0, 0, canvasSpeedometer.width, canvasSpeedometer.height);
+  drawScore();
+  drawSpeed();
+  drawFuel();
 }
 
 function drawBars() {
@@ -55,7 +57,34 @@ function drawCar(car) {
 }
 
 function drawScore() {
-  ctx.fillStyle = "#fff";
-  ctx.font = "30px monospace";
-  ctx.fillText(`${Math.floor(game.distance / 50)}`, 10, 50);
+  ctxSpeedometer.fillStyle = "#fff";
+  ctxSpeedometer.font = "20px monospace";
+  ctxSpeedometer.fillText(`${game.kilometers}km`, 10, 30);
+}
+
+function drawSpeed() {
+  ctxSpeedometer.fillStyle = "#fff";
+  ctxSpeedometer.font = "20px monospace";
+  ctxSpeedometer.fillText(`${game.car.speed * 9}km/h`, 100, 30);
+}
+
+function drawFuel() {
+  ctxSpeedometer.fillStyle = '#4d4d4d';
+  const barX = canvasSpeedometer.width - 150;
+  ctxSpeedometer.fillRect(barX, 15, 120, 20);
+  if (game.car.fuel <= 0) {
+    return;
+  }
+  const blockWidth = 10;
+  const spacing = 2;
+  ctxSpeedometer.fillStyle = '#f40';
+  let i;
+  for (i = 0; i < Math.floor(game.car.fuel / 10); i++) {
+    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, blockWidth, 20);
+  }
+  const rest = Math.floor(game.car.fuel % 10);
+  if (rest !== 0) {
+    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, blockWidth, 20);
+  }
+
 }

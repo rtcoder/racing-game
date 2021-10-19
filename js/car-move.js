@@ -21,8 +21,8 @@ function goToRight() {
 function faster() {
   let {speed} = game.car;
   speed += 3;
-  if (speed > 15) {
-    return;
+  if (speed > game.car.maxSpeed) {
+    speed = game.car.maxSpeed;
   }
   game.car.speed = speed;
 }
@@ -30,8 +30,8 @@ function faster() {
 function slower() {
   let {speed} = game.car;
   speed -= 3;
-  if (speed < 1) {
-    return;
+  if (speed < game.car.minSpeed) {
+    speed = game.car.minSpeed;
   }
   game.car.speed = speed;
 }

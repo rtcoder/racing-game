@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
 }
 
 body {
@@ -15,6 +16,17 @@ body {
 .wrapper {
   display: flex;
   justify-content: center;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#canvas-speedometer {
+  background: #000;
 }
 
 .start {

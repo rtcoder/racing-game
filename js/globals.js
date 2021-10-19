@@ -5,12 +5,21 @@ const CAR_ORIGINAL = {
   height: 100,
   lane: 2,
   nextPosition: 50,
-  speed: 8,
+  speed: 5,
   color: '#09a',
-  isSlowingDown: false
+  isSlowingDown: false,
+  turnSignals: {
+    right: false,
+    left: false
+  },
+  fuel: 100,
+  maxSpeed: 30,
+  minSpeed: 1
 };
 const game = {
-  score: 0,
+  distance: 0,
+  lastKilometersStep: 0,
+  kilometers: 0,
   isStarted: false,
   touchstartX: 0,
   touchstartY: 0,
@@ -29,6 +38,10 @@ const game = {
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const canvasSpeedometer = document.getElementById('canvas-speedometer');
+const ctxSpeedometer = canvasSpeedometer.getContext('2d');
 let enableTouches = false;
 let animationFrameId = null;
 const startButton = document.getElementById('start');
+
+

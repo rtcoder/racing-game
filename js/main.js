@@ -10,6 +10,7 @@ window.onload = function () {
   }
   initEvents();
   resize();
+  startGame();
 };
 
 function startGame() {
@@ -22,7 +23,7 @@ function startGame() {
   game.cars = [];
   game.distance = 0;
   startButton.style.display = 'none';
-  document.querySelector('.controls-info').style.display = 'none';
+  document.querySelector('controls-info').style.display = 'none';
   loop();
 }
 
@@ -34,7 +35,17 @@ function isTouchDevice() {
 
 function update() {
   game.distance += game.car.speed;
+  game.kilometers = (game.distance / 5000).toFixed(1);
+  if (game.kilometers > game.lastKilometersStep + 2 && game.car.speed < game.car.maxSpeed) {
+    console.log(game.kilometers , game.lastKilometersStep + 2)
+    game.car.minSpeed+=2;
+    if (game.car.speed < game.car.minSpeed) {
+      game.car.speed = game.car.minSpeed;
+    }
+    game.lastKilometersStep+=2;
+  }
   game.barsShiftY += game.car.speed;
+  game.car.fuel -= 0.01 * game.car.speed;
   game.barsShiftY %= 50;
   const step = 15;
   if (game.car.x !== game.car.nextPosition) {
@@ -106,7 +117,7 @@ function loop() {
   update();
   draw();
   game.cars.forEach(drawCar);
-  if (checkCollision()) {
+  if (checkCollision() || game.car.fuel <= 0) {
     game.isStarted = false;
     cancelAnimationFrame(animationFrameId);
     startButton.style.display = 'block';
