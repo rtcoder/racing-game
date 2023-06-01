@@ -29,7 +29,7 @@ function faster() {
 
 function slower() {
   let {speed} = game.car;
-  speed -= 3;
+  speed -= 5;
   if (speed < game.car.minSpeed) {
     speed = game.car.minSpeed;
   }

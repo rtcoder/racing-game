@@ -92,12 +92,17 @@ function initEvents() {
 
 function resize() {
   canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth > 400 ? 400 : window.innerWidth;
-  canvasSpeedometer.width = window.innerWidth > 400 ? 400 : window.innerWidth;
+  canvas.width = window.innerWidth > MAX_CANVAS_WIDTH ? MAX_CANVAS_WIDTH : window.innerWidth;
+  canvasSpeedometer.width = window.innerWidth > MAX_CANVAS_WIDTH ? MAX_CANVAS_WIDTH : window.innerWidth;
 
-  game.grassWidth = canvas.width / 10;
-  game.roadWidth = canvas.width / 10 * 8;
+  game.grassWidth = canvas.width / 5;
+  game.roadWidth = canvas.width - (game.grassWidth * 2);
   game.car.y = canvas.height - game.car.height;
   game.car.x = getCenterOfTrafficLane(game.car.lane);
   game.car.nextPosition = getCenterOfTrafficLane(game.car.lane);
+
+  game.cars = game.cars.map(car => {
+    car.x = getCenterOfTrafficLane(car.lane);
+    return car;
+  });
 }

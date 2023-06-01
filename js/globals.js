@@ -1,10 +1,10 @@
 const CAR_ORIGINAL = {
-  x: 50,
+  x: 150,
   y: 0,
   width: 70,
   height: 100,
   lane: 2,
-  nextPosition: 50,
+  nextPosition: 150,
   speed: 5,
   color: '#09a',
   isSlowingDown: false,
@@ -13,9 +13,12 @@ const CAR_ORIGINAL = {
     left: false
   },
   fuel: 100,
-  maxSpeed: 30,
+  maxSpeed: 3000,
   minSpeed: 1
 };
+
+const MAX_CANVAS_WIDTH=500;
+
 const game = {
   distance: 0,
   lastKilometersStep: 0,
@@ -30,7 +33,7 @@ const game = {
   canisters: [],
   carsSpeed: 0.5,
   roadWidth: 200,
-  grassWidth: 30,
+  grassWidth: 40,
   barWithEmptySpaceHeight: 50,
   barWidth: 6,
   barHeight: 25,

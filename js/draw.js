@@ -3,6 +3,8 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGrass();
+  game.canisters.forEach(drawGasStations);
+  drawRoad();
   drawBars();
   drawCar(car);
   ctx.fill();
@@ -10,6 +12,14 @@ function draw() {
   drawScore();
   drawSpeed();
   drawFuel();
+}
+
+function drawRoad() {
+  const {grassWidth, roadWidth} = game;
+
+  ctx.fillStyle = '#191919';
+
+  ctx.fillRect(grassWidth, 0, roadWidth, canvas.height);
 }
 
 function drawBars() {
@@ -25,7 +35,6 @@ function drawBars() {
     ctx.fillRect(firstBarsLineX, (i * barWithEmptySpaceHeight) + barsShiftY, barWidth, barHeight);
     ctx.fillRect(secondBarsLineX, (i * barWithEmptySpaceHeight) + barsShiftY, barWidth, barHeight);
   }
-
 }
 
 function drawGrass() {
@@ -56,11 +65,22 @@ function drawCar(car) {
   ctx.fill();
 }
 
-function drawCanister(canister) {
-  const {color, width, height, x, y} = canister;
-  ctx.fillStyle = color;
-  ctx.fillRect(x - width / 2, y - height / 2, width, height);
+function drawGasStations(canister) {
+  const {width, height, y} = canister;
+  ctx.fillStyle = '#f30';
+  const top = y - height / 2;
+  ctx.fillRect((game.grassWidth / 2) - width / 2, top, width, height);
+  ctx.fillRect((canvas.width - game.grassWidth / 2) - width / 2, top, width, height);
 
+  ctx.font = '45px monospace';
+  ctx.fillStyle = '#000';
+  ctx.fillText("G", (game.grassWidth / 2) - 10, top + 40);
+  ctx.fillText("A", (game.grassWidth / 2) - 10, top + 80);
+  ctx.fillText("S", (game.grassWidth / 2) - 10, top + 120);
+
+  ctx.fillText("G", (canvas.width - game.grassWidth / 2) - 10, top + 40);
+  ctx.fillText("A", (canvas.width - game.grassWidth / 2) - 10, top + 80);
+  ctx.fillText("S", (canvas.width - game.grassWidth / 2) - 10, top + 120);
   ctx.fill();
 }
 
