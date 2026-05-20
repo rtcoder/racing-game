@@ -1,4 +1,6 @@
-function goToLeft() {
+import {game} from './globals.js?v=8';
+
+export function goToLeft() {
   let {lane} = game.car;
   lane--;
   if (lane < 1) {
@@ -8,7 +10,7 @@ function goToLeft() {
   game.car.nextPosition = getCenterOfTrafficLane(lane);
 }
 
-function goToRight() {
+export function goToRight() {
   let {lane} = game.car;
   lane++;
   if (lane > 3) {
@@ -18,7 +20,7 @@ function goToRight() {
   game.car.nextPosition = getCenterOfTrafficLane(lane);
 }
 
-function faster() {
+export function faster() {
   let {speed} = game.car;
   speed += 3;
   if (speed > game.car.maxSpeed) {
@@ -27,11 +29,16 @@ function faster() {
   game.car.speed = speed;
 }
 
-function slower() {
+export function slower() {
   let {speed} = game.car;
   speed -= 5;
   if (speed < game.car.minSpeed) {
     speed = game.car.minSpeed;
   }
   game.car.speed = speed;
+}
+
+export function getCenterOfTrafficLane(laneNumber) {
+  const laneWidth = game.roadWidth / 3;
+  return (laneWidth * laneNumber) + game.grassWidth - (laneWidth / 2);
 }

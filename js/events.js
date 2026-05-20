@@ -1,4 +1,7 @@
-function initTouchEvents() {
+import {game, canvas, canvasSpeedometer, MAX_CANVAS_WIDTH} from './globals.js?v=8';
+import {goToLeft, goToRight, faster, slower, getCenterOfTrafficLane} from './car-move.js?v=8';
+
+export function initTouchEvents() {
   window.addEventListener('touchstart', function (event) {
     const {clientX, clientY} = event.touches[0];
     game.touchstartX = clientX;
@@ -47,7 +50,7 @@ function initTouchEvents() {
   }, false);
 }
 
-function initKeyboardEvents() {
+export function initKeyboardEvents() {
   window.addEventListener('keydown', e => {
     const handledKeys = ['ArrowLeft', 'KeyA', 'ArrowRight', 'KeyD', 'ArrowUp', 'KeyW', 'KeyS', 'ArrowDown'];
     if (!handledKeys.includes(e.code)) {
@@ -105,12 +108,12 @@ function initKeyboardEvents() {
   });
 }
 
-function initEvents() {
+export function initEvents() {
   window.addEventListener("resize", resize);
   window.addEventListener("contextmenu", e => e.preventDefault());
 }
 
-function resize() {
+export function resize() {
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth > MAX_CANVAS_WIDTH ? MAX_CANVAS_WIDTH : window.innerWidth;
   canvasSpeedometer.width = window.innerWidth > MAX_CANVAS_WIDTH ? MAX_CANVAS_WIDTH : window.innerWidth;

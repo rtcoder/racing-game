@@ -1,4 +1,6 @@
-function checkCollisionPlayerWithCars() {
+import {game} from './globals.js?v=8';
+
+export function checkCollisionPlayerWithCars() {
   return game.cars.some(car => {
     return (game.car.x + (game.car.width / 2) > car.x - (car.width / 2)
         && game.car.x - (game.car.width / 2) < car.x + (car.width / 2)
@@ -7,7 +9,7 @@ function checkCollisionPlayerWithCars() {
   });
 }
 
-function getCollidingCanisterIndex() {
+export function getCollidingCanisterIndex() {
   if (game.car.lane === 2) {
     return -1;
   }
@@ -17,6 +19,6 @@ function getCollidingCanisterIndex() {
   });
 }
 
-function checkCollisionPlayerWithCanisters() {
+export function checkCollisionPlayerWithCanisters() {
   return getCollidingCanisterIndex() !== -1;
 }

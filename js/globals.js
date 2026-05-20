@@ -1,4 +1,4 @@
-const CAR_ORIGINAL = {
+export const CAR_ORIGINAL = {
   x: 150,
   y: 0,
   width: 70,
@@ -17,10 +17,10 @@ const CAR_ORIGINAL = {
   minSpeed: 1
 };
 
-const MAX_CANVAS_WIDTH = 500;
-const BASE_FRAME_MS = 1000 / 60;
+export const MAX_CANVAS_WIDTH = 500;
+export const BASE_FRAME_MS = 1000 / 60;
 
-const game = {
+export const game = {
   distance: 0,
   lastKilometersStep: 0,
   kilometers: 0,
@@ -43,17 +43,20 @@ const game = {
   barsShiftY: 0,
 };
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const canvasSpeedometer = document.getElementById('canvas-speedometer');
-const ctxSpeedometer = canvasSpeedometer.getContext('2d');
-let enableTouches = false;
-let animationFrameId = null;
-const startButton = document.getElementById('start');
-const gameTitle = document.getElementById('game-title');
-const gameMessage = document.getElementById('game-message');
+export const canvas = document.getElementById('canvas');
+export const ctx = canvas.getContext('2d');
+export const canvasSpeedometer = document.getElementById('canvas-speedometer');
+export const ctxSpeedometer = canvasSpeedometer.getContext('2d');
+export let animationFrameId = null;
+export const startButton = document.getElementById('start');
+export const gameTitle = document.getElementById('game-title');
+export const gameMessage = document.getElementById('game-message');
 
-function createCar() {
+export function setAnimationFrameId(id) {
+  animationFrameId = id;
+}
+
+export function createCar() {
   return {
     ...CAR_ORIGINAL,
     turnSignals: {...CAR_ORIGINAL.turnSignals}

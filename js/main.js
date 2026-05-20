@@ -1,5 +1,31 @@
-window.onload = function () {
-  enableTouches = isTouchDevice();
+import {
+  BASE_FRAME_MS,
+  canvas,
+  createCar,
+  game,
+  gameMessage,
+  gameTitle,
+  animationFrameId,
+  setAnimationFrameId,
+  startButton
+} from './globals.js?v=8';
+import {getRandomInt, isTouchDevice} from './utils.js?v=8';
+import {getCenterOfTrafficLane} from './car-move.js?v=8';
+import {initEvents, initKeyboardEvents, initTouchEvents, resize} from './events.js?v=8';
+import {checkCollisionPlayerWithCars, getCollidingCanisterIndex} from './collisions.js?v=8';
+import {draw, drawCar} from './draw.js?v=8';
+import './controls-info.js?v=8';
+
+startButton.addEventListener('click', startGame);
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initGame);
+} else {
+  initGame();
+}
+
+function initGame() {
+  const enableTouches = isTouchDevice();
 
   if (enableTouches) {
     initTouchEvents();
@@ -10,7 +36,7 @@ window.onload = function () {
   }
   initEvents();
   resize();
-};
+}
 
 function startGame() {
   if (game.isStarted) {
@@ -21,7 +47,7 @@ function startGame() {
   gameTitle.style.display = 'none';
   gameMessage.style.display = 'none';
   document.querySelector('controls-info').style.display = 'none';
-  animationFrameId = requestAnimationFrame(loop);
+  setAnimationFrameId(requestAnimationFrame(loop));
 }
 
 function resetGameState() {
@@ -166,11 +192,6 @@ function getTwoLaneWave() {
   return [1, 2, 3].filter(lane => lane !== openLane);
 }
 
-function getCenterOfTrafficLane(laneNumber) {
-  const laneWidth = game.roadWidth / 3;
-  return (laneWidth * laneNumber) + game.grassWidth - (laneWidth / 2);
-}
-
 function endGame(reason) {
   game.isStarted = false;
   game.gameOverReason = reason;
@@ -217,5 +238,5 @@ function loop(timestamp) {
     }
   }
 
-  animationFrameId = requestAnimationFrame(loop);
+  setAnimationFrameId(requestAnimationFrame(loop));
 }

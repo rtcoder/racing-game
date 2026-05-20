@@ -1,4 +1,6 @@
-function draw() {
+import {game, canvas, ctx, canvasSpeedometer, ctxSpeedometer} from './globals.js?v=8';
+
+export function draw() {
   const {car} = game;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,7 +47,7 @@ function drawGrass() {
   ctx.fillRect(canvas.width - grassWidth, 0, grassWidth, canvas.height);
 }
 
-function drawCar(car) {
+export function drawCar(car) {
   const {color, width, height, x, y} = car;
   const left = x - width / 2;
   const top = y - height / 2;
