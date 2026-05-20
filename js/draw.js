@@ -58,6 +58,18 @@ function drawCar(car) {
   ctx.fillRect(x - width / 3 - 5, y - height / 2, 10, 5);
   ctx.fillRect(x + width / 3 - 5, y - height / 2, 10, 5);
 
+  if (car.turnSignals?.left) {
+    ctx.fillStyle = '#ff0';
+    ctx.fillRect(x - width / 2 - 5, y - height / 2, 8, 10);
+    ctx.fillRect(x - width / 2 - 5, y + height / 2 - 10, 8, 10);
+  }
+
+  if (car.turnSignals?.right) {
+    ctx.fillStyle = '#ff0';
+    ctx.fillRect(x + width / 2 - 3, y - height / 2, 8, 10);
+    ctx.fillRect(x + width / 2 - 3, y + height / 2 - 10, 8, 10);
+  }
+
   ctx.fillStyle = car.isSlowingDown ? 'red' : '#4d4d4d';
   ctx.fillRect(x - width / 3 - 5, y + height / 2 - 5, 10, 5);
   ctx.fillRect(x + width / 3 - 5, y + height / 2 - 5, 10, 5);
@@ -93,7 +105,7 @@ function drawScore() {
 function drawSpeed() {
   ctxSpeedometer.fillStyle = "#fff";
   ctxSpeedometer.font = "20px monospace";
-  ctxSpeedometer.fillText(`${game.car.speed * 9}km/h`, 100, 30);
+  ctxSpeedometer.fillText(`${Math.round(game.car.speed * 9)}km/h`, 100, 30);
 }
 
 function drawFuel() {
@@ -112,7 +124,7 @@ function drawFuel() {
   }
   const rest = Math.floor(game.car.fuel % 10);
   if (rest !== 0) {
-    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, blockWidth, 20);
+    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, rest, 20);
   }
 
 }

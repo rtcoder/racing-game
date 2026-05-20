@@ -44,6 +44,17 @@ canvas {
   font-size: 20px;
 }
 
+.game-message {
+  display: none;
+  position: fixed;
+  top: calc(50% - 105px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font: 700 24px sans-serif;
+  text-align: center;
+}
+
 controls-info {
   position: fixed;
   color: #fff;

@@ -1,5 +1,4 @@
 function checkCollisionPlayerWithCars() {
-  return false;
   return game.cars.some(car => {
     return (game.car.x + (game.car.width / 2) > car.x - (car.width / 2)
         && game.car.x - (game.car.width / 2) < car.x + (car.width / 2)
@@ -8,12 +7,16 @@ function checkCollisionPlayerWithCars() {
   });
 }
 
-function checkCollisionPlayerWithCanisters() {
+function getCollidingCanisterIndex() {
   if (game.car.lane === 2) {
-    return false;
+    return -1;
   }
-  return game.canisters.some(canister => {
+  return game.canisters.findIndex(canister => {
     return (game.car.y + (game.car.height / 2) > canister.y - (canister.height / 2)
         && game.car.y - (game.car.height / 2) < canister.y + (canister.height / 2));
   });
+}
+
+function checkCollisionPlayerWithCanisters() {
+  return getCollidingCanisterIndex() !== -1;
 }

@@ -16,34 +16,44 @@ function startGame() {
   if (game.isStarted) {
     return;
   }
-  game.isStarted = true;
+  resetGameState();
+  startButton.style.display = 'none';
+  gameMessage.style.display = 'none';
+  document.querySelector('controls-info').style.display = 'none';
+  animationFrameId = requestAnimationFrame(loop);
+}
 
-  game.car = {...CAR_ORIGINAL};
+function resetGameState() {
+  game.isStarted = true;
+  game.gameOverReason = '';
+  game.car = createCar();
   game.cars = [];
   game.canisters = [];
   game.distance = 0;
-  startButton.style.display = 'none';
-  document.querySelector('controls-info').style.display = 'none';
-  loop();
+  game.lastKilometersStep = 0;
+  game.kilometers = 0;
+  game.barsShiftY = 0;
+  game.lastFrameTime = null;
+  resize();
 }
 
-function update() {
-  game.distance += game.car.speed;
+function update(delta) {
+  game.distance += game.car.speed * delta;
   game.kilometers = (game.distance / 5000).toFixed(1);
 
   if (game.kilometers > game.lastKilometersStep + 2 && game.car.speed < game.car.maxSpeed) {
-    game.car.minSpeed += 2;
+    game.car.minSpeed += 1;
     if (game.car.speed < game.car.minSpeed) {
       game.car.speed = game.car.minSpeed;
     }
     game.lastKilometersStep += 2;
   }
 
-  game.barsShiftY += game.car.speed;
-  game.car.fuel -= 0.01 * game.car.speed;
+  game.barsShiftY += game.car.speed * delta;
+  game.car.fuel -= 0.006 * game.car.speed * delta;
   game.barsShiftY %= 50;
 
-  const step = 15;
+  const step = 15 * delta;
 
   if (game.car.x !== game.car.nextPosition) {
     if (game.car.x < game.car.nextPosition) {
@@ -61,33 +71,33 @@ function update() {
     generateCars();
   }
 
-  if (game.canisters.length < 10) {
+  if (game.canisters.length < 6) {
     generateCanisters();
   }
 
-  moveCars();
-  moveCanisters();
+  moveCars(delta);
+  moveCanisters(delta);
 }
 
-function moveCars() {
+function moveCars(delta) {
   game.cars = game.cars.map(car => {
-    car.y += game.car.speed - 2;
+    car.y += Math.max(game.car.speed - 2, 1) * delta;
     return car;
   }).filter(car => car.y < canvas.height + car.height);
 }
 
-function moveCanisters() {
+function moveCanisters(delta) {
   game.canisters = game.canisters.map(canister => {
-    canister.y += game.car.speed;
+    canister.y += game.car.speed * delta;
     return canister;
   }).filter(canister => canister.y < canvas.height + canister.height);
 }
 
 function generateCars() {
-  for (let i = 0; i < 100; i++) {
+  while (game.cars.length < 12) {
     const lastCar = game.cars ? game.cars[game.cars.length - 1] : null;
     const lane = getRandomInt(1, 3);
-    const distance = getRandomInt(350, 550);
+    const distance = getRandomInt(420, 650);
     game.cars.push({
       lane,
       x: getCenterOfTrafficLane(lane),
@@ -100,10 +110,9 @@ function generateCars() {
 }
 
 function generateCanisters() {
-  for (let i = 0; i < 100; i++) {
+  while (game.canisters.length < 6) {
     const lastCanister = game.canisters ? game.canisters[game.canisters.length - 1] : null;
-    const distance = getRandomInt(500, 1000);
-    // const distance = getRandomInt(3500, 5000);
+    const distance = getRandomInt(1800, 2600);
     game.canisters.push({
       y: (lastCanister?.y || 0) - distance,
       width: 100,
@@ -117,23 +126,45 @@ function getCenterOfTrafficLane(laneNumber) {
   return (laneWidth * laneNumber) + game.grassWidth - (laneWidth / 2);
 }
 
-function loop() {
+function endGame(reason) {
+  game.isStarted = false;
+  game.gameOverReason = reason;
+  cancelAnimationFrame(animationFrameId);
+  gameMessage.innerText = `${reason}\n${game.kilometers}km`;
+  gameMessage.style.display = 'block';
+  startButton.innerText = 'Restart';
+  startButton.style.display = 'block';
+}
+
+function loop(timestamp) {
   if (!game.isStarted) {
     return;
   }
 
-  update();
+  if (game.lastFrameTime === null) {
+    game.lastFrameTime = timestamp;
+  }
+
+  const delta = Math.min((timestamp - game.lastFrameTime) / BASE_FRAME_MS, 2);
+  game.lastFrameTime = timestamp;
+
+  update(delta);
   draw();
   game.cars.forEach(drawCar);
 
-  if (checkCollisionPlayerWithCars() || game.car.fuel <= 0) {
-    game.isStarted = false;
-    cancelAnimationFrame(animationFrameId);
-    startButton.style.display = 'block';
+  if (checkCollisionPlayerWithCars()) {
+    endGame('Crash');
     return;
   }
 
-  if (checkCollisionPlayerWithCanisters()) {
+  if (game.car.fuel <= 0) {
+    endGame('Out of fuel');
+    return;
+  }
+
+  const canisterIndex = getCollidingCanisterIndex();
+  if (canisterIndex !== -1) {
+    game.canisters.splice(canisterIndex, 1);
     game.car.fuel += 70;
 
     if (game.car.fuel > 100) {

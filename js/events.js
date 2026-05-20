@@ -6,10 +6,16 @@ function initTouchEvents() {
   }, false);
 
   window.addEventListener('touchend', function (event) {
+    if (!game.isStarted) {
+      return;
+    }
     const {clientX, clientY} = event.changedTouches[0];
     game.touchendX = clientX;
     game.touchendY = clientY;
     const {touchstartX, touchstartY, touchendX, touchendY} = game;
+    if (Math.abs(touchendX - touchstartX) < 20 && Math.abs(touchendY - touchstartY) < 20) {
+      return;
+    }
     if (Math.abs(touchendY - touchstartY) < Math.abs(touchendX - touchstartX)) {
       if (touchendX < touchstartX) {
         goToLeft();
@@ -43,7 +49,14 @@ function initTouchEvents() {
 
 function initKeyboardEvents() {
   window.addEventListener('keydown', e => {
+    const handledKeys = ['ArrowLeft', 'KeyA', 'ArrowRight', 'KeyD', 'ArrowUp', 'KeyW', 'KeyS', 'ArrowDown'];
+    if (!handledKeys.includes(e.code)) {
+      return;
+    }
     e.preventDefault();
+    if (!game.isStarted) {
+      return;
+    }
     switch (e.code) {
       case 'ArrowLeft':
       case 'KeyA':
@@ -67,7 +80,14 @@ function initKeyboardEvents() {
     }
   });
   window.addEventListener('keyup', e => {
+    const handledKeys = ['ArrowLeft', 'KeyA', 'ArrowRight', 'KeyD', 'KeyS', 'ArrowDown'];
+    if (!handledKeys.includes(e.code)) {
+      return;
+    }
     e.preventDefault();
+    if (!game.isStarted) {
+      return;
+    }
     switch (e.code) {
       case 'ArrowLeft':
       case 'KeyA':

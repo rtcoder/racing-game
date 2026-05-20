@@ -13,25 +13,27 @@ const CAR_ORIGINAL = {
     left: false
   },
   fuel: 100,
-  maxSpeed: 3000,
+  maxSpeed: 26,
   minSpeed: 1
 };
 
-const MAX_CANVAS_WIDTH=500;
+const MAX_CANVAS_WIDTH = 500;
+const BASE_FRAME_MS = 1000 / 60;
 
 const game = {
   distance: 0,
   lastKilometersStep: 0,
   kilometers: 0,
   isStarted: false,
+  gameOverReason: '',
+  lastFrameTime: null,
   touchstartX: 0,
   touchstartY: 0,
   touchendX: 0,
   touchendY: 0,
-  car: CAR_ORIGINAL,
+  car: createCar(),
   cars: [],
   canisters: [],
-  carsSpeed: 0.5,
   roadWidth: 200,
   grassWidth: 40,
   barWithEmptySpaceHeight: 50,
@@ -47,5 +49,11 @@ const ctxSpeedometer = canvasSpeedometer.getContext('2d');
 let enableTouches = false;
 let animationFrameId = null;
 const startButton = document.getElementById('start');
+const gameMessage = document.getElementById('game-message');
 
-
+function createCar() {
+  return {
+    ...CAR_ORIGINAL,
+    turnSignals: {...CAR_ORIGINAL.turnSignals}
+  };
+}
