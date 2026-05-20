@@ -9,6 +9,7 @@ function draw() {
   drawCar(car);
   ctx.fill();
   ctxSpeedometer.clearRect(0, 0, canvasSpeedometer.width, canvasSpeedometer.height);
+  drawHudPanel();
   drawScore();
   drawSpeed();
   drawFuel();
@@ -172,34 +173,48 @@ function drawFuelStation(centerX, top, width, height) {
 }
 
 function drawScore() {
-  ctxSpeedometer.fillStyle = "#fff";
-  ctxSpeedometer.font = "20px monospace";
-  ctxSpeedometer.fillText(`${game.kilometers}km`, 10, 30);
+  drawHudMetric('DIST', `${game.kilometers}km`, 14);
 }
 
 function drawSpeed() {
-  ctxSpeedometer.fillStyle = "#fff";
-  ctxSpeedometer.font = "20px monospace";
-  ctxSpeedometer.fillText(`${Math.round(game.car.speed * 9)}km/h`, 100, 30);
+  drawHudMetric('SPEED', `${Math.round(game.car.speed * 9)}`, 118);
 }
 
 function drawFuel() {
-  ctxSpeedometer.fillStyle = '#4d4d4d';
-  const barX = canvasSpeedometer.width - 150;
-  ctxSpeedometer.fillRect(barX, 15, 120, 20);
-  if (game.car.fuel <= 0) {
-    return;
-  }
+  const barX = canvasSpeedometer.width - 142;
+  const barY = 18;
   const blockWidth = 10;
   const spacing = 2;
-  ctxSpeedometer.fillStyle = '#f40';
-  let i;
-  for (i = 0; i < Math.floor(game.car.fuel / 10); i++) {
-    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, blockWidth, 20);
-  }
-  const rest = Math.floor(game.car.fuel % 10);
-  if (rest !== 0) {
-    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), 15, rest, 20);
-  }
+  ctxSpeedometer.fillStyle = 'rgba(255, 255, 255, 0.16)';
+  ctxSpeedometer.fillRect(barX, barY, 120, 16);
 
+  ctxSpeedometer.fillStyle = '#9aa3ad';
+  ctxSpeedometer.font = '700 9px monospace';
+  ctxSpeedometer.fillText('FUEL', barX, 13);
+
+  const fuelBlocks = Math.ceil(Math.max(game.car.fuel, 0) / 10);
+  ctxSpeedometer.fillStyle = game.car.fuel < 25 ? '#f04438' : '#ff6b2c';
+  for (let i = 0; i < fuelBlocks; i++) {
+    ctxSpeedometer.fillRect(barX + (i * (blockWidth + spacing)), barY, blockWidth, 16);
+  }
+}
+
+function drawHudPanel() {
+  const margin = 8;
+  ctxSpeedometer.fillStyle = 'rgba(10, 13, 17, 0.82)';
+  ctxSpeedometer.fillRect(margin, 6, canvasSpeedometer.width - (margin * 2), 38);
+
+  ctxSpeedometer.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+  ctxSpeedometer.lineWidth = 1;
+  ctxSpeedometer.strokeRect(margin + 0.5, 6.5, canvasSpeedometer.width - (margin * 2) - 1, 37);
+}
+
+function drawHudMetric(label, value, x) {
+  ctxSpeedometer.fillStyle = '#9aa3ad';
+  ctxSpeedometer.font = '700 9px monospace';
+  ctxSpeedometer.fillText(label, x, 16);
+
+  ctxSpeedometer.fillStyle = '#fff';
+  ctxSpeedometer.font = '800 20px monospace';
+  ctxSpeedometer.fillText(value, x, 35);
 }

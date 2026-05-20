@@ -50,6 +50,7 @@ const ctxSpeedometer = canvasSpeedometer.getContext('2d');
 let enableTouches = false;
 let animationFrameId = null;
 const startButton = document.getElementById('start');
+const gameTitle = document.getElementById('game-title');
 const gameMessage = document.getElementById('game-message');
 
 function createCar() {

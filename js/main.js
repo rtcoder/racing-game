@@ -18,6 +18,7 @@ function startGame() {
   }
   resetGameState();
   startButton.style.display = 'none';
+  gameTitle.style.display = 'none';
   gameMessage.style.display = 'none';
   document.querySelector('controls-info').style.display = 'none';
   animationFrameId = requestAnimationFrame(loop);
