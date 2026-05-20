@@ -34,6 +34,7 @@ const game = {
   car: createCar(),
   cars: [],
   canisters: [],
+  trafficWaveIndex: 0,
   roadWidth: 200,
   grassWidth: 40,
   barWithEmptySpaceHeight: 50,

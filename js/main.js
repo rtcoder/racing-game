@@ -33,6 +33,7 @@ function resetGameState() {
   game.lastKilometersStep = 0;
   game.kilometers = 0;
   game.barsShiftY = 0;
+  game.trafficWaveIndex = 0;
   game.lastFrameTime = null;
   resize();
 }
@@ -94,31 +95,74 @@ function moveCanisters(delta) {
 }
 
 function generateCars() {
-  while (game.cars.length < 12) {
-    const lastCar = game.cars ? game.cars[game.cars.length - 1] : null;
-    const lane = getRandomInt(1, 3);
-    const distance = getRandomInt(420, 650);
-    game.cars.push({
-      lane,
-      x: getCenterOfTrafficLane(lane),
-      y: (lastCar?.y || 0) - distance,
-      width: 70,
-      height: 100,
-      color: '#fff'
+  const lookAhead = canvas.height + (game.car.speed * 55);
+
+  while (getTopMostY(game.cars) > -lookAhead) {
+    const waveY = getTopMostY(game.cars) - getTrafficGap();
+    const lanes = getTrafficWaveLanes();
+
+    lanes.forEach(lane => {
+      game.cars.push({
+        lane,
+        x: getCenterOfTrafficLane(lane),
+        y: waveY + getRandomInt(-35, 35),
+        width: 70,
+        height: 100,
+        color: '#fff'
+      });
     });
   }
 }
 
 function generateCanisters() {
-  while (game.canisters.length < 6) {
-    const lastCanister = game.canisters ? game.canisters[game.canisters.length - 1] : null;
-    const distance = getRandomInt(1800, 2600);
+  const lookAhead = canvas.height + (game.car.speed * 90);
+
+  while (getTopMostY(game.canisters) > -lookAhead) {
     game.canisters.push({
-      y: (lastCanister?.y || 0) - distance,
+      y: getTopMostY(game.canisters) - getCanisterGap(),
       width: 100,
       height: 150
     });
   }
+}
+
+function getTopMostY(items) {
+  if (!items.length) {
+    return 0;
+  }
+  return Math.min(...items.map(item => item.y));
+}
+
+function getTrafficGap() {
+  const speedFactor = game.car.speed / game.car.maxSpeed;
+  return Math.round(460 + (speedFactor * 520) + getRandomInt(-45, 90));
+}
+
+function getCanisterGap() {
+  const speedFactor = game.car.speed / game.car.maxSpeed;
+  return Math.round(1900 + (speedFactor * 950) + getRandomInt(-160, 220));
+}
+
+function getTrafficWaveLanes() {
+  game.trafficWaveIndex++;
+
+  if (game.trafficWaveIndex <= 2) {
+    return [getRandomInt(0, 1) === 0 ? 1 : 3];
+  }
+
+  const speedFactor = game.car.speed / game.car.maxSpeed;
+  const twoLaneFrequency = speedFactor > 0.7 ? 3 : speedFactor > 0.4 ? 4 : 5;
+
+  if (game.trafficWaveIndex % twoLaneFrequency === 0) {
+    return getTwoLaneWave();
+  }
+
+  return [getRandomInt(1, 3)];
+}
+
+function getTwoLaneWave() {
+  const openLane = getRandomInt(1, 3);
+  return [1, 2, 3].filter(lane => lane !== openLane);
 }
 
 function getCenterOfTrafficLane(laneNumber) {
